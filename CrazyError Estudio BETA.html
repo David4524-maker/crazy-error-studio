@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CrazyError Studio - Potato Edition</title>
+    <style>
+        /* Estilos ultra limpios y ligeros para que cargue al instante */
+        body {
+            background-color: #000084; /* Azul clásico de pantalla azul retro */
+            color: white;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 50px;
+            margin: 0;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 24px;
+            text-shadow: 2px 2px #000;
+        }
+        .box {
+            background: #c0c0c0;
+            color: black;
+            border: 3px outset #fff;
+            width: 320px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: left;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+        }
+        .btn {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            padding: 5px 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn:active {
+            border-style: inset;
+        }
+        .error-popup {
+            position: absolute;
+            background: #c0c0c0;
+            color: black;
+            border: 2px outset #fff;
+            padding: 10px;
+            width: 200px;
+            font-size: 12px;
+            text-align: left;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CrazyError Studio <span style="font-size:12px; background:yellow; color:black; padding:2px;">BETA</span></h1>
+    <p>Modo de bajo consumo: Cero animaciones pesadas ni crear ventanas.</p>
+
+    <div class="box">
+        <strong>Generador de Caos</strong>
+        <hr>
+        <p style="font-size: 13px;">Presiona el botón para saturar la pantalla con estilo clásico de 8 bits:</p>
+        <center><button class="btn" onclick="crearCaos()">¡Generar Error!</button></center>
+    </div>
+
+    <script>
+        function crearCaos() {
+            // Genera ventanas falsas de manera ligera sin congelar el navegador
+            for (let i = 0; i < 5; i++) {
+                let x = Math.random() * (window.innerWidth - 220);
+                let y = Math.random() * (window.innerHeight - 120);
+                
+                let popup = document.createElement('div');
+                popup.className = 'error-popup';
+                popup.style.left = x + 'px';
+                popup.style.top = y + 'px';
+                popup.style.display = 'block';
+                popup.innerHTML = `<strong>⚠️ Error crítico</strong><hr><p>Fallo de memoria #${Math.floor(Math.random()*9000+1000)}</p><button class="btn" onclick="this.parentElement.remove()" style="font-size:10px;">Aceptar</button>`;
+                
+                document.body.appendChild(popup);
+            }
+        }
+    </script>
+
+</body>
+</html>
