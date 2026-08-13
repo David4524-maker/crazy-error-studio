@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CrazyError Studio - macOS Editions</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #00172d 0%, #003f7f 50%, #005fbf 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        h1 {
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Panel de Control Principal */
+        .studio-window {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.05);
+            width: 440px;
+            text-align: left;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .window-titlebar {
+            background: linear-gradient(to bottom, #f6f6f6 0%, #e5e5e5 100%);
+            border-bottom: 1px solid #b4b4b4;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .traffic-lights {
+            display: flex;
+            gap: 8px;
+        }
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.15);
+        }
+        .tl-red { background-color: #ff5f57; }
+        .tl-yellow { background-color: #ffbd2e; }
+        .tl-green { background-color: #28c940; }
+
+        .window-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4d4d4d;
+            margin-right: 40px;
+        }
+
+        .window-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            box-sizing: border-box;
+            outline: none;
+            background: rgba(255,255,255,0.9);
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: #0d7aff;
+            box-shadow: 0 0 0 3px rgba(13,122,255,0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            height: 45px;
+        }
+
+        .row-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        .row-inputs > div {
+            flex: 1;
+        }
+
+        .macos-btn {
+            background: linear-gradient(to bottom, #609fff 0%, #0d7aff 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            width: 100%;
+            margin-top: 5px;
+        }
+        .macos-btn:hover {
+            background: linear-gradient(to bottom, #73aaff 19%, #2688ff 100%);
+        }
+
+        /* ==========================================
+           ESTILOS DE VENTANAS POPUP (MACOS X, SONOMA, TAHOE)
+           ========================================== */
+
+        @keyframes popupPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-body {
+            padding: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .popup-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+        .popup-message {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #333;
+            word-break: break-word;
+        }
+        .popup-message strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        /* 1. Estilo macOS X */
+        .custom-popup.macosx-style {
+            position: absolute;
+            background: #e6e6e6;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 330px;
+            text-align: left;
+            border: 1px solid #999;
+            animation: popupPop 0.25s ease-out;
+        }
+        .macosx-style .window-titlebar {
+            background: linear-gradient(to bottom, #dfdfdf 0%, #cccccc 100%);
+            border-bottom: 1px solid #adadad;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .macosx-style .popup-btn-bar {
+            background: #dcdcdc;
+            border-top: 1px solid #ccc;
+            padding: 8px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .macosx-style .popup-action-btn {
+            background: linear-gradient(to bottom, #ffffff 0%, #dedede 100%);
+            border: 1px solid #777;
+            color: #000;
+            padding: 4px 14px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        .macosx-style .popup-action-btn:active {
+            background: linear-gradient(to bottom, #b5b5b5 0%, #dcdcdc 100%);
+        }
+
+        /* 2. Estilo macOS Sonoma */
+        .custom-popup.sonoma-style {
+            position: absolute;
+            background: rgba(245, 245, 245, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35), inset 0 0 0 0.5px rgba(255,255,255,0.6);
+            width: 330px;
+            text-align: left;
+            border: 1px solid rgba(0,0,0,0.1);
+            animation: popupPop 0.3s ease-out;
+        }
+        .sonoma-style .window-titlebar {
+            background: transparent;
+            border-bottom: none;
+            padding-top: 8px;
+        }
+        .sonoma-style .popup-btn-bar {
+            background: transparent;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .sonoma-style .popup-action-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 5px 14px;
+            font-size: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .sonoma-style .popup-action-btn.secondary {
+            background: rgba(0,0,0,0.06);
+            color: #000;
+        }
+
+        /* 3. Estilo macOS Tahoe */
+        .custom-popup.tahoe-style {
+            position: absolute;
+            background: rgba(30, 30, 35, 0.88);
+            backdrop-filter: blur(25px);
+            color: #f0f0f0;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
+            width: 330px;
+            text-align: left;
+            animation: popupPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tahoe-style .window-titlebar {
+            background: transparent;
+            border-bottom: none;
+            padding-top: 8px;
+        }
+        .tahoe-style .window-title {
+            color: #dcdcdc;
+        }
+        .tahoe-style .popup-message {
+            color: #e0e0e0;
+        }
+        .tahoe-style .popup-btn-bar {
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 10px 15px;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .tahoe-style .popup-action-btn {
+            background: linear-gradient(to bottom, #3290ff, #0070eb);
+            color: white;
+            border: none;
+            padding: 5px 14px;
+            font-size: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .tahoe-style .popup-action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f0f0f0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>CrazyError Studio</h1>
+        <div class="subtitle">macOS Edition - Estilo macOS</div>
+    </div>
+
+    <!-- Panel de Creación / Estudio -->
+    <div class="studio-window">
+        <div class="window-titlebar">
+            <div class="traffic-lights">
+                <div class="traffic-light tl-red"></div>
+                <div class="traffic-light tl-yellow"></div>
+                <div class="traffic-light tl-green"></div>
+            </div>
+            <div class="window-title">Creador macOS Avanzado</div>
+        </div>
+        <div class="window-content">
+            <label for="selectEstilo">Versión de macOS:</label>
+            <select id="selectEstilo">
+                <option value="macosx">🍏 macOS X (Clásico / Metálico)</option>
+                <option value="sonoma">✨ macOS Sonoma (Moderno / Claro)</option>
+                <option value="tahoe">🌌 macOS Tahoe (Futurista / Oscuro)</option>
+            </select>
+
+            <label for="inputTitulo">Título de la ventana:</label>
+            <input type="text" id="inputTitulo" value="Aviso del Sistema">
+
+            <label for="inputMensaje">Mensaje personalizado:</label>
+            <textarea id="inputMensaje">¿Desea continuar con esta operación?</textarea>
+
+            <label for="selectIcono">Seleccionar Icono:</label>
+            <select id="selectIcono">
+                <option value="question">❓ Pregunta (Círculo Azul con Interrogación)</option>
+                <option value="warning">⚠️ Advertencia (Triángulo Amarillo)</option>
+                <option value="error">❌ Error Crítico (Círculo Rojo con X)</option>
+                <option value="info">ℹ️ Información (Círculo Azul)</option>
+            </select>
+
+            <div class="row-inputs">
+                <div>
+                    <label for="inputBoton1">Texto Botón 1:</label>
+                    <input type="text" id="inputBoton1" value="No">
+                </div>
+                <div>
+                    <label for="inputBoton2">Texto Botón 2:</label>
+                    <input type="text" id="inputBoton2" value="Sí">
+                </div>
+            </div>
+
+            <button class="macos-btn" onclick="crearVentanaPersonalizada()">Crear y Lanzar Ventana</button>
+        </div>
+    </div>
+
+    <script>
+        function crearVentanaPersonalizada() {
+            let estilo = document.getElementById('selectEstilo').value;
+            let titulo = document.getElementById('inputTitulo').value;
+            let mensaje = document.getElementById('inputMensaje').value;
+            let tipoIcono = document.getElementById('selectIcono').value;
+            let btn1Texto = document.getElementById('inputBoton1').value;
+            let btn2Texto = document.getElementById('inputBoton2').value;
+
+            let x = Math.random() * (window.innerWidth - 360);
+            let y = Math.random() * (window.innerHeight - 280);
+            
+            let popup = document.createElement('div');
+            popup.style.left = Math.max(20, x) + 'px';
+            popup.style.top = Math.max(120, y) + 'px';
+            
+            // Iconos SVG (Incluyendo Pregunta)
+            let iconSVG = '';
+            if (tipoIcono === 'question') {
+                iconSVG = `<svg class="popup-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#007aff"/><path d="M18 18c0-3.3 2.7-6 6-6s6 2.7 6 6c0 2.2-1.2 3.4-3 4.5-1.3.8-2 1.5-2 3.5v1m0 5v2" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`;
+            } else if (tipoIcono === 'warning') {
+                iconSVG = `<svg class="popup-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M42.53 36.45l-14.88-26.3a5.42 5.42 0 0 0-9.3 0l-14.88 26.3a5.43 5.43 0 0 0 4.66 8.16h29.76a5.43 5.43 0 0 0 4.66-8.16z" fill="#ffcc00"/><path d="M24 14.34a2.57 2.57 0 0 1 2.57 2.57v12.85a2.57 2.57 0 1 1-5.14 0V16.91a2.57 2.57 0 0 1 2.57-2.57zm0 23.14a3.08 3.08 0 1 1 0-6.16 3.08 3.08 0 0 1 0 6.16z" fill="#000"/></svg>`;
+            } else if (tipoIcono === 'error') {
+                iconSVG = `<svg class="popup-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#ff3b30"/><path d="M16 16l16 16M32 16L16 32" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`;
+            } else if (tipoIcono === 'info') {
+                iconSVG = `<svg class="popup-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#007aff"/><path d="M24 14v4M24 22v12" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`;
+            }
+
+            // Construir botones
+            let htmlBotones = '';
+            if (btn1Texto.trim() !== '') {
+                htmlBotones += `<button class="popup-action-btn secondary" onclick="this.parentElement.parentElement.remove()">${btn1Texto}</button>`;
+            }
+            if (btn2Texto.trim() !== '') {
+                htmlBotones += `<button class="popup-action-btn" onclick="this.parentElement.parentElement.remove()">${btn2Texto}</button>`;
+            }
+
+            // Asignar clase y estructura según la versión elegida
+            popup.className = `custom-popup ${estilo}-style`;
+
+            popup.innerHTML = `
+                <div class="window-titlebar">
+                    <div class="traffic-lights" style="padding-left: 8px;">
+                        <div class="traffic-light tl-red" onclick="this.parentElement.parentElement.parentElement.remove()" style="cursor:pointer;" title="Cerrar"></div>
+                        <div class="traffic-light tl-yellow"></div>
+                        <div class="traffic-light tl-green"></div>
+                    </div>
+                    <div class="window-title">${titulo}</div>
+                </div>
+                <div class="popup-body">
+                    ${iconSVG}
+                    <div class="popup-message">
+                        <strong>${titulo}</strong>
+                        ${mensaje}
+                    </div>
+                </div>
+                <div class="popup-btn-bar">
+                    ${htmlBotones}
+                </div>
+            `;
+            
+            document.body.appendChild(popup);
+        }
+    </script>
+
+</body>
+</html>
